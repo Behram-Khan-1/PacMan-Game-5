@@ -10,29 +10,29 @@ public class Wrapping : MonoBehaviour
         wallTilemap.CompressBounds();
     }
 
-    public void WrappingMovement(Vector2Int nextDir)
+    public void WrappingMovement(Vector2Int nextDir, Transform objectToMove)
     {
-        if (GetNextCell() == true)
+        if (GetNextCell(objectToMove) == true)
         {
-            Vector3Int playerCell = wallTilemap.WorldToCell(transform.position);
+            Vector3Int playerCell = wallTilemap.WorldToCell(objectToMove.position);
 
             if (nextDir == Vector2Int.right && playerCell.x > wallTilemap.cellBounds.xMax - 1)
             {
                 playerCell.x = wallTilemap.cellBounds.xMin;
-                transform.position = wallTilemap.GetCellCenterWorld(playerCell);
+                objectToMove.position = wallTilemap.GetCellCenterWorld(playerCell);
             }
             else if (nextDir == Vector2Int.left && playerCell.x < wallTilemap.cellBounds.xMin)
             {
                 playerCell.x = wallTilemap.cellBounds.xMax - 1;
-                transform.position = wallTilemap.GetCellCenterWorld(playerCell);
+                objectToMove.position = wallTilemap.GetCellCenterWorld(playerCell);
             }
 
         }
     }
 
-    public bool GetNextCell()
+    public bool GetNextCell(Transform objectToMove)
     {
-        Vector3Int nextCell = wallTilemap.WorldToCell(transform.position);
+        Vector3Int nextCell = wallTilemap.WorldToCell(objectToMove.position);
         var nextTile = wallTilemap.GetTile(nextCell);
         if (nextTile == null)
         {

@@ -10,19 +10,17 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Vector3Int currentCell;
     [SerializeField] private Vector3 targetPos;
-    [SerializeField] private Vector2Int moveDir = Vector2Int.zero;   // Current moving dir
-    [SerializeField] private Vector2Int nextDir = Vector2Int.zero;   // Queued direction
+    [SerializeField] public Vector2Int moveDir = Vector2Int.zero;   // Current moving dir
+    [SerializeField] public Vector2Int nextDir = Vector2Int.zero;   // Queued direction
 
     InputHandler input;
-    Wrapping wrapping;
+    public Wrapping wrapping;
 
     void Start()
     {
         input = GetComponent<InputHandler>();
-        wrapping = GetComponent<Wrapping>();
-
         // Set initial position
-        //Get players currentPos to Cell and set targetPos to Cell too. 
+        //Get players currentPos to Cell and set targetPos to Cell too.
         currentCell = wallTilemap.WorldToCell(transform.position);
         targetPos = wallTilemap.GetCellCenterWorld(currentCell);
         transform.position = targetPos;
@@ -85,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (tile == null) // if player goes out of bounds, then we get null as no tile is there and we have to warp
         {
-            wrapping.WrappingMovement(nextDir);
+            wrapping.WrappingMovement(moveDir, this.transform);
             return true; // so we continue moving and dont stop
         }
 
